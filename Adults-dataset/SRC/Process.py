@@ -22,13 +22,13 @@ import joblib
 
 
 
-Dataset_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
-Machine_Save_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/Output/KNN - Machine.sav'
+Dataset_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
+Machine_Save_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/Output/KNN - Machine.sav'
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 42
-min_k_value = 40
+max_k_value = 60
+min_k_value = 2
 
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
 # CSV FILE AS THE COLUMN NAMES BUT IN THIS DATASET
@@ -79,7 +79,7 @@ def PlotKValues(error_rate : list, k_range : range):
 
     return 'PLOTTED'
 
-def Train_Test_Machine(Datas : dict, Outputs : dict, K : int) :
+def Train_Test_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
     # DEFINE MACHINE WITH K VALUE
     KNN1 = KNeighborsClassifier(n_neighbors=K)
 
@@ -93,8 +93,14 @@ def Train_Test_Machine(Datas : dict, Outputs : dict, K : int) :
     Outputs['Confusion Matrix %d' % K] = confusion_matrix(Datas['Y_Test'], predictions)
     Outputs['Classification Report %d' % K] = classification_report(Datas['Y_Test'], predictions)
     error = np.mean(predictions != Datas['Y_Test'])
-    
-    return error, KNN1
+
+    # SAVING BEST MACHINE
+    if SAVE :
+        Machine_Save_File = open(Machine_Save_Dir, 'wb')
+        joblib.dump(KNN1, Machine_Save_File)
+        Machine_Save_File.close()
+
+    return error
 
 def Main_Process() :
     # DEFINIG VARIABLES LOCAL TO THIS
@@ -140,7 +146,7 @@ def Main_Process() :
     Train_Test_Datas['Y_Test'] = y_test
 
     print("PHASE 5 : Training base model, K=1")
-    Train_Test_Machine(Train_Test_Datas, Outputs, 1)
+    Train_Test_Machine(Train_Test_Datas, Outputs, 1, False)
 
 
 
@@ -153,7 +159,7 @@ def Main_Process() :
     # THE K VALUE WHICH MAKES LEAST ERRROR WILL BE CHOSEN
     for Temp_K in K_range:
         print('PAHSE 6 : Training K=%d' % Temp_K)
-        error , _  = Train_Test_Machine(Train_Test_Datas, Outputs, Temp_K)
+        error = Train_Test_Machine(Train_Test_Datas, Outputs, Temp_K, False)
         error_rate.append(error)
         print('PHASE 6 : k = %d error = %f' % (Temp_K, error_rate[Temp_K - min_k_value] * 100))
 
@@ -163,7 +169,7 @@ def Main_Process() :
     PlotKValues(error_rate, K_range)
 
     # THE LINE BELLOW :
-    # error_rate.index(min(error_rate)) + 
+    # error_rate.index(min(error_rate)) + min_k_value
     # WILL RETURN THE BEST K VALUE
     # SINCE min WILL RETURN LOWEST VALUE IN LIST
     # WE USE index TO GET THE INDEX OF IT BUT THIS
@@ -173,17 +179,14 @@ def Main_Process() :
 
     # Retraining with the best K value
     print("PHASE 8 : Retraining with the best K value")
-    last_error, KNN_Machine = Train_Test_Machine(Train_Test_Datas, Outputs, Best_K_Value)
+    last_error = Train_Test_Machine(Train_Test_Datas, Outputs, Best_K_Value, True)
     error_rate.append(last_error)
 
     # SAVING ALL THE RESULTS AND MACHINE
     print("PHASE 9 : Saving results")
     SaveOutput(Outputs)
 
-    # SAVING BEST MACHINE
-    Machine_Save_File = open(Machine_Save_Dir, 'wb')
-    joblib.dump(KNN_Machine, Machine_Save_File)
-    Machine_Save_File.close()
+
     return 'Done'
 
 # RUN MAIN
