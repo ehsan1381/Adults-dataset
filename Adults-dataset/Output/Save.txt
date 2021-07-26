@@ -1,0 +1,562 @@
+Columns : ['age', 'workclass', 'fnlwgt', 'education', 'education-num', 'marital-stauts', 'occupation', 'relationship', 'race', 'sex', 'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income'] 
+Confusion Matrix 0 : [[6051 1404]
+ [1311 1003]] 
+Classification Report 0 :               precision    recall  f1-score   support
+
+           0       0.82      0.81      0.82      7455
+           1       0.42      0.43      0.42      2314
+
+    accuracy                           0.72      9769
+   macro avg       0.62      0.62      0.62      9769
+weighted avg       0.73      0.72      0.72      9769
+ 
+Confusion Matrix 1 : [[6051 1404]
+ [1311 1003]] 
+Classification Report 1 :               precision    recall  f1-score   support
+
+           0       0.82      0.81      0.82      7455
+           1       0.42      0.43      0.42      2314
+
+    accuracy                           0.72      9769
+   macro avg       0.62      0.62      0.62      9769
+weighted avg       0.73      0.72      0.72      9769
+ 
+Confusion Matrix 2 : [[6943  512]
+ [1759  555]] 
+Classification Report 2 :               precision    recall  f1-score   support
+
+           0       0.80      0.93      0.86      7455
+           1       0.52      0.24      0.33      2314
+
+    accuracy                           0.77      9769
+   macro avg       0.66      0.59      0.59      9769
+weighted avg       0.73      0.77      0.73      9769
+ 
+Confusion Matrix 3 : [[6323 1132]
+ [1282 1032]] 
+Classification Report 3 :               precision    recall  f1-score   support
+
+           0       0.83      0.85      0.84      7455
+           1       0.48      0.45      0.46      2314
+
+    accuracy                           0.75      9769
+   macro avg       0.65      0.65      0.65      9769
+weighted avg       0.75      0.75      0.75      9769
+ 
+Confusion Matrix 4 : [[6899  556]
+ [1642  672]] 
+Classification Report 4 :               precision    recall  f1-score   support
+
+           0       0.81      0.93      0.86      7455
+           1       0.55      0.29      0.38      2314
+
+    accuracy                           0.78      9769
+   macro avg       0.68      0.61      0.62      9769
+weighted avg       0.75      0.78      0.75      9769
+ 
+Confusion Matrix 5 : [[6544  911]
+ [1351  963]] 
+Classification Report 5 :               precision    recall  f1-score   support
+
+           0       0.83      0.88      0.85      7455
+           1       0.51      0.42      0.46      2314
+
+    accuracy                           0.77      9769
+   macro avg       0.67      0.65      0.66      9769
+weighted avg       0.75      0.77      0.76      9769
+ 
+Confusion Matrix 6 : [[6904  551]
+ [1574  740]] 
+Classification Report 6 :               precision    recall  f1-score   support
+
+           0       0.81      0.93      0.87      7455
+           1       0.57      0.32      0.41      2314
+
+    accuracy                           0.78      9769
+   macro avg       0.69      0.62      0.64      9769
+weighted avg       0.76      0.78      0.76      9769
+ 
+Confusion Matrix 7 : [[6693  762]
+ [1418  896]] 
+Classification Report 7 :               precision    recall  f1-score   support
+
+           0       0.83      0.90      0.86      7455
+           1       0.54      0.39      0.45      2314
+
+    accuracy                           0.78      9769
+   macro avg       0.68      0.64      0.66      9769
+weighted avg       0.76      0.78      0.76      9769
+ 
+Confusion Matrix 8 : [[6927  528]
+ [1563  751]] 
+Classification Report 8 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.59      0.32      0.42      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.70      0.63      0.64      9769
+weighted avg       0.76      0.79      0.76      9769
+ 
+Confusion Matrix 9 : [[6693  762]
+ [1371  943]] 
+Classification Report 9 :               precision    recall  f1-score   support
+
+           0       0.83      0.90      0.86      7455
+           1       0.55      0.41      0.47      2314
+
+    accuracy                           0.78      9769
+   macro avg       0.69      0.65      0.67      9769
+weighted avg       0.76      0.78      0.77      9769
+ 
+Confusion Matrix 10 : [[6909  546]
+ [1531  783]] 
+Classification Report 10 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.59      0.34      0.43      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.70      0.63      0.65      9769
+weighted avg       0.76      0.79      0.77      9769
+ 
+Confusion Matrix 11 : [[6774  681]
+ [1389  925]] 
+Classification Report 11 :               precision    recall  f1-score   support
+
+           0       0.83      0.91      0.87      7455
+           1       0.58      0.40      0.47      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.70      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 12 : [[6940  515]
+ [1522  792]] 
+Classification Report 12 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.65      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 13 : [[6805  650]
+ [1419  895]] 
+Classification Report 13 :               precision    recall  f1-score   support
+
+           0       0.83      0.91      0.87      7455
+           1       0.58      0.39      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.70      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 14 : [[6941  514]
+ [1521  793]] 
+Classification Report 14 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 15 : [[6810  645]
+ [1413  901]] 
+Classification Report 15 :               precision    recall  f1-score   support
+
+           0       0.83      0.91      0.87      7455
+           1       0.58      0.39      0.47      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 16 : [[6917  538]
+ [1504  810]] 
+Classification Report 16 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 17 : [[6817  638]
+ [1433  881]] 
+Classification Report 17 :               precision    recall  f1-score   support
+
+           0       0.83      0.91      0.87      7455
+           1       0.58      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.70      0.65      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 18 : [[6915  540]
+ [1487  827]] 
+Classification Report 18 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 19 : [[6816  639]
+ [1407  907]] 
+Classification Report 19 :               precision    recall  f1-score   support
+
+           0       0.83      0.91      0.87      7455
+           1       0.59      0.39      0.47      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 20 : [[6928  527]
+ [1509  805]] 
+Classification Report 20 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 21 : [[6852  603]
+ [1453  861]] 
+Classification Report 21 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.59      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 22 : [[6906  549]
+ [1479  835]] 
+Classification Report 22 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 23 : [[6823  632]
+ [1406  908]] 
+Classification Report 23 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.59      0.39      0.47      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.78      9769
+ 
+Confusion Matrix 24 : [[6925  530]
+ [1508  806]] 
+Classification Report 24 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 25 : [[6839  616]
+ [1420  894]] 
+Classification Report 25 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.59      0.39      0.47      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.78      9769
+ 
+Confusion Matrix 26 : [[6930  525]
+ [1504  810]] 
+Classification Report 26 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 27 : [[6844  611]
+ [1428  886]] 
+Classification Report 27 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.59      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 28 : [[6922  533]
+ [1506  808]] 
+Classification Report 28 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 29 : [[6858  597]
+ [1434  880]] 
+Classification Report 29 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 30 : [[6936  519]
+ [1518  796]] 
+Classification Report 30 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 31 : [[6867  588]
+ [1449  865]] 
+Classification Report 31 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 32 : [[6933  522]
+ [1517  797]] 
+Classification Report 32 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 33 : [[6886  569]
+ [1474  840]] 
+Classification Report 33 :               precision    recall  f1-score   support
+
+           0       0.82      0.92      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 34 : [[6960  495]
+ [1530  784]] 
+Classification Report 34 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.72      0.64      0.65      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 35 : [[6896  559]
+ [1465  849]] 
+Classification Report 35 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 36 : [[6950  505]
+ [1534  780]] 
+Classification Report 36 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.34      0.43      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.63      0.65      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 37 : [[6900  555]
+ [1492  822]] 
+Classification Report 37 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 38 : [[6924  531]
+ [1509  805]] 
+Classification Report 38 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.35      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 39 : [[6895  560]
+ [1480  834]] 
+Classification Report 39 :               precision    recall  f1-score   support
+
+           0       0.82      0.92      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 40 : [[6925  530]
+ [1490  824]] 
+Classification Report 40 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.61      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.72      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 41 : [[6877  578]
+ [1460  854]] 
+Classification Report 41 :               precision    recall  f1-score   support
+
+           0       0.82      0.92      0.87      7455
+           1       0.60      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 42 : [[6913  542]
+ [1492  822]] 
+Classification Report 42 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 43 : [[6867  588]
+ [1442  872]] 
+Classification Report 43 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 44 : [[6911  544]
+ [1483  831]] 
+Classification Report 44 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 45 : [[6880  575]
+ [1443  871]] 
+Classification Report 45 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.78      9769
+ 
+Confusion Matrix 46 : [[6930  525]
+ [1517  797]] 
+Classification Report 46 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.34      0.44      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.65      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 47 : [[6888  567]
+ [1456  858]] 
+Classification Report 47 :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 48 : [[6913  542]
+ [1484  830]] 
+Classification Report 48 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.36      0.45      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.64      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix 49 : [[6898  557]
+ [1465  849]] 
+Classification Report 49 :               precision    recall  f1-score   support
+
+           0       0.82      0.93      0.87      7455
+           1       0.60      0.37      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.66      9769
+weighted avg       0.77      0.79      0.77      9769
+ 
+Confusion Matrix Last : [[6880  575]
+ [1443  871]] 
+Classification Report Last :               precision    recall  f1-score   support
+
+           0       0.83      0.92      0.87      7455
+           1       0.60      0.38      0.46      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.71      0.65      0.67      9769
+weighted avg       0.77      0.79      0.78      9769
+ 

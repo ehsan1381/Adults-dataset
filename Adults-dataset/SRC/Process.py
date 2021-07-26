@@ -18,12 +18,12 @@ import matplotlib.pyplot as plt
 # IN AN ALGORYTM TO LOWER THE ERROR
 Outputs = {}
 
-DIR = 'DataFiles/Dataset.csv'
+DIR = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
 max_k_value = 50
-
+min_k_value = 40
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
 # CSV FILE AS THE COLUMN NAMES BUT IN THIS DATASET
 # FIRST LINE CONTAINS DATA NOT THE COLUMN NAMES SO
@@ -50,7 +50,7 @@ def SaveOutput(Objects : dict) :
     return 'SAVED'
 
 
-def Main() :
+def Main_Process() :
     # READ DATASET
     print("PHASE 2 : Reading dataset")
     df = pd.read_csv(DIR, names=Columns)
@@ -61,13 +61,13 @@ def Main() :
     # TO TRAIN THE SYSTEM BUT WE CAN DO MORE PROCESSING
     # AND USE THESE DATAS TOO
     print("PHASE 3 : Preprocessing dataset")
-    df.drop(['workclass', 'fnlwgt', 'education', 'marital-stauts', 'occupation', 'relationship', 'race', 'sex', 'capital-gain', 'capital-loss','native-country'], inplace=True, axis=1)
 
-    # SINCE INCOME COLUMN IS CATEGORICAL WE SHOULD
-    # CONVERT IT TO A COLUMN OF ZEROS AND ONES (BOOLEANS)
-    # TO BE ABLE TO TRAIN THE MACHINE
-    df['income >50k'] = pd.get_dummies(df['income'], drop_first=True)
-    df.drop('income',inplace=True, axis=1)
+    # THE LIST BELLOW CONTAINS COLUMNS THAT NEED TO BE
+    # CONVERTED TO ZEROS AND ONES
+    columns_to_convert = ['workclass', 'education', 'marital-stauts', 'occupation', 'relationship', 'race', 'sex','native-country', 'income']
+    for temp_column in columns_to_convert :
+        print('PHASE 3 : Converting Column %s' % temp_column)
+        df.join(pd.get_dummies(df[temp_column], drop_first=True))
 
     # HERE WE TRAIN A BASIC SYSTEM ON THE DATASET
     print("PHASE 4 : Base Training model")
@@ -88,11 +88,15 @@ def Main() :
     error_rate = []
     # THIS IS SIMPLE WE TAKE K VALUE WE TRAIN WE TEST ERROR
     # THE K VALUE WHICH MAKES LEAST ERRROR WILL BE CHOSEN
-    for i in range(1,max_k_value):
+    for i in range(min_k_value, max_k_value):
+        print('PAHSE 6 : Training K=%d' % i)
         KNN = KNeighborsClassifier(n_neighbors=i)
         KNN.fit(X_train, y_train)
         prediction = KNN.predict(X_test)
-        error_rate.append(np.mean(prediction != y_test))
+
+        error = np.mean(prediction != y_test)
+        print('PHASE 6 : k = %d, error = %f' % (i, error * 100))
+        error_rate.append(error)
 
         Outputs['Confusion Matrix %d' % i] = confusion_matrix(y_test, prediction)
         Outputs['Classification Report %d' % i] = classification_report(y_test, prediction)
@@ -124,4 +128,4 @@ def Main() :
 
 # RUN MAIN
 if __name__ == '__main__':
-    Main()
+    Main_Process()

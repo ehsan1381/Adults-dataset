@@ -65,7 +65,7 @@ def Classifie_Age(Age):
     return Result
 
 
-def Main():
+def Main_Visualization():
 
     # COLUMN NAMES
     Columns = ['age', 'workclass', 'fnlwgt', 'education',
