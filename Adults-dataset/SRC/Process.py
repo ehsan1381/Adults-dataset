@@ -1,6 +1,11 @@
 # IN THIS PYTHON CODE WE WOULD TRAIN A
 # KNN MACHINE TO PREDICT WEATHER A PERSON
 # MAKES 50K A YEAR OR NOT
+#
+# CODING POLICY IS FUNCTIONAL PROGRAMMING
+# BECAUSE WE GET LESS GLOBAL VARAIABLES AND
+# MORE LOCAL, AND IN RESULT LESS RAM USAGE
+# DURING EXECUTION
 
 # WE USE THESE PRINT TO SEE WHAT STATUS WE HAVE
 # AND WHERE WE ARE
@@ -13,17 +18,18 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
+import joblib
 
-# A DICT OBJECT TO SAVE RESULTS OF EACH TRAIN
-# IN AN ALGORYTM TO LOWER THE ERROR
-Outputs = {}
 
-DIR = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
+
+Dataset_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
+Machine_Save_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/Output/KNN - Machine.sav'
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 50
+max_k_value = 42
 min_k_value = 40
+
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
 # CSV FILE AS THE COLUMN NAMES BUT IN THIS DATASET
 # FIRST LINE CONTAINS DATA NOT THE COLUMN NAMES SO
@@ -43,17 +49,64 @@ def SaveOutput(Objects : dict) :
     except: 
         os.mkdir('Output')
         os.chdir('Output')
-    SaveFile = open('Save.txt','w')
+    SaveFile = open('Trained_Machines_Reports.txt','w')
     for i in Objects:
         SaveFile.write('%s : %s \n' %(i,str(Objects[i])))
     SaveFile.close()
     return 'SAVED'
 
+# PLOTTING K VALES AND ERRORS
+def PlotKValues(error_rate : list, k_range : range):
+    # PLOT COLOR CONFIGURATIONS
+    Plot_Color = (0.2, 0.2, 0.2, 0.8)
+
+    # CREATE FIGURE OBJ
+    fig = plt.figure(figsize=(15,5))
+
+    # ADD AXES
+    ax = fig.add_axes([0.1,0.1,0.8,0.8], facecolor=Plot_Color)
+
+    # PLOT
+    ax.plot(k_range, error_rate, marker='o')
+
+    # SETTINGS
+    ax.set_xlabel('K Value')
+    ax.set_ylabel('Error rate')
+    ax.set_title('Choosing the K value')
+
+    # SAVE
+    plt.savefig('K Value.png', dpi=100, facecolor=Plot_Color, edgecolor=Plot_Color)
+
+    return 'PLOTTED'
+
+def Train_Test_Machine(Datas : dict, Outputs : dict, K : int) :
+    # DEFINE MACHINE WITH K VALUE
+    KNN1 = KNeighborsClassifier(n_neighbors=K)
+
+    # TRAIN MACHINE
+    KNN1.fit(Datas['X_Train'], Datas['Y_Train'])
+
+    # FEED TEST DATA TO MACHINE AND RECORD PREDICTIONS
+    predictions = KNN1.predict(Datas['X_Test'])
+
+    # CALCULATE ERRORS
+    Outputs['Confusion Matrix %d' % K] = confusion_matrix(Datas['Y_Test'], predictions)
+    Outputs['Classification Report %d' % K] = classification_report(Datas['Y_Test'], predictions)
+    error = np.mean(predictions != Datas['Y_Test'])
+    
+    return error, KNN1
 
 def Main_Process() :
+    # DEFINIG VARIABLES LOCAL TO THIS
+    # FUNCTION :
+    # A DICT OBJECT TO SAVE RESULTS OF EACH TRAIN
+    # IN AN ALGORYTM TO LOWER THE ERROR
+    Outputs = {}
+    Train_Test_Datas = {}
+    error_rate = []
     # READ DATASET
     print("PHASE 2 : Reading dataset")
-    df = pd.read_csv(DIR, names=Columns)
+    df = pd.read_csv(Dataset_Dir, names=Columns)
     
     Outputs['Columns'] = Columns
 
@@ -64,68 +117,75 @@ def Main_Process() :
 
     # THE LIST BELLOW CONTAINS COLUMNS THAT NEED TO BE
     # CONVERTED TO ZEROS AND ONES
-    columns_to_convert = ['workclass', 'education', 'marital-stauts', 'occupation', 'relationship', 'race', 'sex','native-country', 'income']
+    columns_to_convert = ['workclass', 'education', 'marital-stauts',
+                         'occupation', 'relationship', 'race',
+                         'sex','native-country', 'income']
     for temp_column in columns_to_convert :
-        print('PHASE 3 : Converting Column %s' % temp_column)
-        df.join(pd.get_dummies(df[temp_column], drop_first=True))
+        print('PHASE 3 : Processing Column %s' % temp_column)
+        df = df.join(pd.get_dummies(df[temp_column], drop_first=True))
+        df.drop(temp_column, axis=1, inplace=True)
 
     # HERE WE TRAIN A BASIC SYSTEM ON THE DATASET
-    print("PHASE 4 : Base Training model")
+    print("PHASE 4 : Splitting Dataset")
 
     # SPLITTING TO TEST AND TRAIN SETS
-    X_train, X_test, y_train, y_test = train_test_split(df[['age','education-num','hours-per-week']], df['income >50k'], test_size=0.3, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(df.drop(' >50K', axis=1), df[' >50K'], test_size=0.3, random_state=42)
 
-    print("PHASE 5 : Calculating error of base model")
-    KNN1 = KNeighborsClassifier(n_neighbors=1)
-    KNN1.fit(X_train, y_train)
-    predictions = KNN1.predict(X_test)
-    Outputs['Confusion Matrix 0'] = confusion_matrix(y_test, predictions)
-    Outputs['Classification Report 0'] = classification_report(y_test, predictions)
+    # AT THIS POINT WE ADD THEM ALL TO A DICT OBJ
+    # SO THAT WE GET A PRETTIER AND CLEANER FUNCTION 
+    # CALL BUT HANDLE THE SAME STUFF AT Train_Test_Machine()
+    Train_Test_Datas['X_Train'] = x_train
+    Train_Test_Datas['X_Test'] = x_test
+    Train_Test_Datas['Y_Train'] = y_train
+    Train_Test_Datas['Y_Test'] = y_test
+
+    print("PHASE 5 : Training base model, K=1")
+    Train_Test_Machine(Train_Test_Datas, Outputs, 1)
 
 
 
     print("PHASE 6 : Finding the best value for K")
-    error_rate = []
+
+
+    # SETTING K RANGE
+    K_range = range(min_k_value, max_k_value + 1)
     # THIS IS SIMPLE WE TAKE K VALUE WE TRAIN WE TEST ERROR
     # THE K VALUE WHICH MAKES LEAST ERRROR WILL BE CHOSEN
-    for i in range(min_k_value, max_k_value):
-        print('PAHSE 6 : Training K=%d' % i)
-        KNN = KNeighborsClassifier(n_neighbors=i)
-        KNN.fit(X_train, y_train)
-        prediction = KNN.predict(X_test)
-
-        error = np.mean(prediction != y_test)
-        print('PHASE 6 : k = %d, error = %f' % (i, error * 100))
+    for Temp_K in K_range:
+        print('PAHSE 6 : Training K=%d' % Temp_K)
+        error , _  = Train_Test_Machine(Train_Test_Datas, Outputs, Temp_K)
         error_rate.append(error)
+        print('PHASE 6 : k = %d error = %f' % (Temp_K, error_rate[Temp_K - min_k_value] * 100))
 
-        Outputs['Confusion Matrix %d' % i] = confusion_matrix(y_test, prediction)
-        Outputs['Classification Report %d' % i] = classification_report(y_test, prediction)
 
     # PLOTTING K VALUES AND ERRORS
     print("PHASE 7 : Plotting K values and errors")
-    fig = plt.figure(figsize=(15,5))
-    ax = fig.add_axes([0.1,0.1,0.8,0.8])
-    ax.plot(range(1,max_k_value),error_rate, marker='o')
-    ax.set_xlabel('K Value')
-    ax.set_ylabel('Error rate')
-    ax.set_title('Choosing the K value')
-    plt.savefig('K Value.png', dpi=100)
+    PlotKValues(error_rate, K_range)
 
-    print(error_rate.index(min(error_rate)) + 1, min(error_rate))
+    # THE LINE BELLOW :
+    # error_rate.index(min(error_rate)) + 
+    # WILL RETURN THE BEST K VALUE
+    # SINCE min WILL RETURN LOWEST VALUE IN LIST
+    # WE USE index TO GET THE INDEX OF IT BUT THIS
+    # INDEX + min_k_value IS THE ACTUAL K
+    Best_K_Value = error_rate.index(min(error_rate)) + min_k_value
+    print(Best_K_Value, min(error_rate))
 
     # Retraining with the best K value
     print("PHASE 8 : Retraining with the best K value")
-    KNN2 = KNeighborsClassifier(n_neighbors=45)
-    KNN2.fit(X_train, y_train)
-    predictions2 = KNN2.predict(X_test)
+    last_error, KNN_Machine = Train_Test_Machine(Train_Test_Datas, Outputs, Best_K_Value)
+    error_rate.append(last_error)
 
-    # SAVING ALL THE RESULTS
+    # SAVING ALL THE RESULTS AND MACHINE
     print("PHASE 9 : Saving results")
-    Outputs['Confusion Matrix Last'] = confusion_matrix(y_test, predictions2)
-    Outputs['Classification Report Last'] = classification_report(y_test, predictions2)
     SaveOutput(Outputs)
+
+    # SAVING BEST MACHINE
+    Machine_Save_File = open(Machine_Save_Dir, 'wb')
+    joblib.dump(KNN_Machine, Machine_Save_File)
+    Machine_Save_File.close()
     return 'Done'
 
 # RUN MAIN
 if __name__ == '__main__':
-    Main_Process()
+    print(Main_Process())

@@ -10,7 +10,7 @@ https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
 
 Official dataset description at :
 
-https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data
+https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names
 
 The adults dataset is one of the most important datasets for datascientists and for data analysts. At this point we are going to make all the plots possible and necessary to analyze this dataset.
 
