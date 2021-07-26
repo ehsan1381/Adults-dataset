@@ -7,6 +7,7 @@ import os
 import heapq
 from operator import itemgetter
 
+DIR = 'DataFiles/Dataset.csv'
 
 # COUNT CATEGORICAL VALUES IN A COLUMN
 # RETURN DICTIONARY IN FOLLOWING FORMAT
@@ -74,7 +75,7 @@ def Main():
                'income']
     
     # READ DATASET
-    df = pd.read_csv('adult.csv', names=Columns)
+    df = pd.read_csv(DIR, names=Columns)
     
     # CREATE FOLDER FOR OUTPUT PLOTS
     try: os.chdir('Output')

@@ -22,16 +22,16 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="DataFiles\Dataset.csv" />
+    <Content Include="SRC\DataFiles\Dataset.csv" />
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Python\Process.py" />
-    <Compile Include="Python\Visualization.py" />
+    <Compile Include="SRC\Process.py" />
+    <Compile Include="SRC\Visualization.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataFiles\" />
-    <Folder Include="Python\" />
+    <Folder Include="SRC\DataFiles\" />
+    <Folder Include="SRC\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 # IN AN ALGORYTM TO LOWER THE ERROR
 Outputs = {}
 
+DIR = 'DataFiles/Dataset.csv'
+
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
 max_k_value = 50
@@ -51,7 +53,7 @@ def SaveOutput(Objects : dict) :
 def Main() :
     # READ DATASET
     print("PHASE 2 : Reading dataset")
-    df = pd.read_csv('adult.data', names=Columns)
+    df = pd.read_csv(DIR, names=Columns)
     
     Outputs['Columns'] = Columns
 
