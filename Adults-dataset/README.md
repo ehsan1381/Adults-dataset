@@ -31,9 +31,13 @@ Python Version : 3.8.5
 
 # FILE DESCRIPTION
 
-KNN - Machine.sav : Best machine trained and saved\n
-Trained_Machines_Reports.txt : Reports of each train\n
-K Value.png : A plot to see the K values and their errors\n
-Process.py : Train and test machines, Algorythm to find the best one save it\n
+KNN - Machine.sav : Best machine trained and saved
+
+Trained_Machines_Reports.txt : Reports of each train
+
+K Value.png : A plot to see the K values and their errors
+
+Process.py : Train and test machines, Algorythm to find the best one save it
+
 Visualization.py : Plot information about dataset
 
