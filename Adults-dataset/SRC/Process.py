@@ -23,11 +23,11 @@ import joblib
 
 
 Dataset_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
-Machine_Save_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/Output/KNN - Machine.sav'
+Machine_Save_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/Output/KNN - Machine.sav'
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 60
+max_k_value = 70 
 min_k_value = 2
 
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
@@ -176,15 +176,17 @@ def Main_Process() :
     # INDEX + min_k_value IS THE ACTUAL K
     Best_K_Value = error_rate.index(min(error_rate)) + min_k_value
     print(Best_K_Value, min(error_rate))
+    
+    # SAVING ALL THE RESULTS AND MACHINE
+    print("PHASE 8 : Saving results")
+    SaveOutput(Outputs)
 
+    
     # Retraining with the best K value
     print("PHASE 8 : Retraining with the best K value")
     last_error = Train_Test_Machine(Train_Test_Datas, Outputs, Best_K_Value, True)
     error_rate.append(last_error)
 
-    # SAVING ALL THE RESULTS AND MACHINE
-    print("PHASE 9 : Saving results")
-    SaveOutput(Outputs)
 
 
     return 'Done'
