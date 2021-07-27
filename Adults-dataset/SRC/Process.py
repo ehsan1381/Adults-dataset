@@ -17,7 +17,7 @@ import os
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as pltd
 import joblib
 
 
