@@ -17,7 +17,7 @@ import os
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
-import matplotlib.pyplot as pltd
+import matplotlib.pyplot as plt
 import joblib
 
 
@@ -27,8 +27,8 @@ Machine_Save_Dir = '%s/Output/KNN - Machine.sav' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 3
-min_k_value = 2
+max_k_value = 30
+min_k_value = 20
 
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
 # CSV FILE AS THE COLUMN NAMES BUT IN THIS DATASET
