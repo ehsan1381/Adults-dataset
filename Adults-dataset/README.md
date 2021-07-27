@@ -17,6 +17,23 @@ The adults dataset is one of the most important datasets for datascientists and 
 The plots are found in the output directory
 
 # Dependencies
-Pandas : https://pandas.pydata.org/
+Pandas : https://pandas.pydata.org/ Version : 1.0.3
 
 Matplotlib : https://matplotlib.org/
+
+Numpy : https://numpy.org/ Version 1.18.4
+
+Scikit-learn : https://scikit-learn.org/ Version : 0.22.2.post1
+
+Joblib : https://joblib.readthedocs.io/ Version : 0.14.1
+
+Python Version : 3.8.5
+
+# FILE DESCRIPTION
+
+KNN - Machine.sav : Best machine trained and saved\n
+Trained_Machines_Reports.txt : Reports of each train\n
+K Value.png : A plot to see the K values and their errors\n
+Process.py : Train and test machines, Algorythm to find the best one save it\n
+Visualization.py : Plot information about dataset
+
