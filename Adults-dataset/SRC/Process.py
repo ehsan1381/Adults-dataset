@@ -21,13 +21,13 @@ import matplotlib.pyplot as plt
 import joblib
 
 
-
-Dataset_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/DataFiles/Dataset.csv'
-Machine_Save_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset/SRC/Output/KNN - Machine.sav'
+Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
+Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
+Machine_Save_Dir = '%s/Output/KNN - Machine.sav' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 70 
+max_k_value = 3
 min_k_value = 2
 
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
@@ -45,10 +45,11 @@ Columns = ['age', 'workclass', 'fnlwgt', 'education',
 # ALSO CREATES A SUBDIRECTORY NAMED 'Output'
 # SO WE DONT MESS THINGS UP
 def SaveOutput(Objects : dict) :
-    try: os.chdir('Output')
+    Output_Dir = '%s/Output' % Main_Dir
+    try: os.chdir(Output_Dir)
     except: 
-        os.mkdir('Output')
-        os.chdir('Output')
+        os.mkdir(Output_Dir)
+        os.chdir(Output_Dir)
     SaveFile = open('Trained_Machines_Reports.txt','w')
     for i in Objects:
         SaveFile.write('%s : %s \n' %(i,str(Objects[i])))
@@ -73,9 +74,10 @@ def PlotKValues(error_rate : list, k_range : range):
     ax.set_xlabel('K Value')
     ax.set_ylabel('Error rate')
     ax.set_title('Choosing the K value')
+    ax.set_xlim(min_k_value, max_k_value)
 
     # SAVE
-    plt.savefig('K Value.png', dpi=100, facecolor=Plot_Color, edgecolor=Plot_Color)
+    plt.savefig('%s/Output/K Value.png' % Main_Dir, dpi=100, facecolor=Plot_Color, edgecolor=Plot_Color)
 
     return 'PLOTTED'
 
