@@ -19,12 +19,13 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import joblib
+import math
 
 
 Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
 Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
 Machine_Save_Dir = '%s/Output/KNN - Machine.sav' % Main_Dir
-
+Number_of_Rows = 50000
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
 max_k_value = 30
@@ -103,6 +104,41 @@ def Train_Test_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
         Machine_Save_File.close()
 
     return error
+
+
+def Num_Func(N : float) :
+    # N IS A FLOAT BETWEEN 0 AND 1 AND IS THE
+    # PERCENTAGE OF PEOPLE WITH A SPECIFIC FEATURE
+    # THAT HAVE >50K
+    return ((math.e ** n) - 1) / math.e
+
+def Count_Values(Data_Frame) :
+    Number_of_Values = {}
+    Data_Column = Data_Frame.columns[0]
+    Percent_of_Values = {}
+    Values = {}
+    for i in range(0, Number_of_Rows + 1):
+        income = Data_Frame.iloc[i]['income']
+        value = Data_Frame.iloc[i][Data_Column]
+
+        Values[value] = 0
+
+        if income == '>50K' : Number_of_Values['%s_count' % value] += 1
+        else : Number_of_Values['%s_count_total'% value] += 1
+
+    for c in Values :
+        Percent_of_Values[c] = Number_of_Values['%s_count' % value] / Number_of_Values['%s_count_total'% value]
+
+    return Percent_of_Values
+
+
+def Convert_to_Numerical(Data_Frame) :
+    
+
+    
+    
+    return
+
 
 def Main_Process() :
     # DEFINIG VARIABLES LOCAL TO THIS
