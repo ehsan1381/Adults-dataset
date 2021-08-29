@@ -27,6 +27,7 @@
     <Content Include="Output\Trained_Machines_Reports.txt" />
     <Content Include="SRC\DataFiles\Dataset.csv" />
     <Content Include="README.md" />
+    <Content Include="SRC\DataFiles\Processed_DataFrame.csv" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SRC\Process.py" />

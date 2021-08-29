@@ -151,7 +151,8 @@ def Preprocess_Data(DataFrame) :
         # TRANSFORM COLUMN VALUES
         Print_Log('PHASE 3 : Transforming Column %s' % temp_column)
         DataFrame[temp_column] = Encoder.transform(DataFrame[temp_column])
-
+    Print_Log('PHASE 3 : Saving processed data')
+    DataFrame.to_csv('%s/SRC/DataFiles/Processed_DataFrame.csv' % Main_Dir, index=False, header=False)
     return DataFrame
 
 def Split_Data(DataFrame) :
