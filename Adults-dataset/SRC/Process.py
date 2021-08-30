@@ -8,9 +8,9 @@
 # DURING EXECUTION
 
 import os
-Main_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
+Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
 Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
-Machine_Save_Dir = '%s/Output/KNN - Machine.sav' % Main_Dir
+Machine_Save_Dir = '%s/Output' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
@@ -36,16 +36,18 @@ def Print_Log(Log_String : str) :
 # AND WHERE WE ARE
 Print_Log("PHASE 1 : Importing modules")
 
-import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 from sklearn import preprocessing
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import LinearSVC
+from sklearn.multiclass import OneVsOneClassifier
 import matplotlib.pyplot as plt
 import joblib
-
-
+import pandas as pd
+import numpy as np
 
 # PANDAS WILL ALWAYS TAKE THE FIRST LINE IN THE
 # CSV FILE AS THE COLUMN NAMES BUT IN THIS DATASET
@@ -105,15 +107,27 @@ def PlotKValues(error_rate : list, k_range : range):
 
     return 'PLOTTED'
 
-def Train_Test_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
+def Plot_Confusion_Matrix() :
+    # Visualize confusion matrix
+    plt.imshow(confusion_mat, interpolation='nearest', cmap=plt.cm.gray)
+    plt.title('Confusion matrix')
+    plt.colorbar()
+    ticks = np.arange(5)
+    plt.xticks(ticks, ticks)
+    plt.yticks(ticks, ticks)
+    plt.ylabel('True labels')
+    plt.xlabel('Predicted labels')
+    
+
+def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
     # DEFINE MACHINE WITH K VALUE
-    KNN1 = KNeighborsClassifier(n_neighbors=K)
+    KNN = KNeighborsClassifier(n_neighbors=K)
 
     # TRAIN MACHINE
-    KNN1.fit(Datas['X_Train'], Datas['Y_Train'])
+    KNN.fit(Datas['X_Train'], Datas['Y_Train'])
 
     # FEED TEST DATA TO MACHINE AND RECORD PREDICTIONS
-    predictions = KNN1.predict(Datas['X_Test'])
+    predictions = KNN.predict(Datas['X_Test'])
 
     # CALCULATE ERRORS
     Outputs['Confusion Matrix %d' % K] = confusion_matrix(Datas['Y_Test'], predictions)
@@ -123,9 +137,7 @@ def Train_Test_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
     # SAVING BEST MACHINE
     if SAVE :
         Print_Log('Saving Machine')
-        Machine_Save_File = open(Machine_Save_Dir, 'wb')
-        joblib.dump(KNN1, Machine_Save_File)
-        Machine_Save_File.close()
+        joblib.dump(KNN, '%s/K-Nearest-Neighbor-Machine.sav' % Machine_Save_Dir)
 
     return error
 
@@ -179,7 +191,7 @@ def Determine_Best_K(Train_Test_Datas, Outputs) :
     # THE K VALUE WHICH MAKES LEAST ERRROR WILL BE CHOSEN
     for Temp_K in K_range:
         Print_Log('PAHSE 6 : Training K=%d' % Temp_K)
-        error = Train_Test_Machine(Train_Test_Datas, Outputs, Temp_K, False)
+        error = K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Temp_K, False)
         error_rate.append(error)
         Print_Log('\t  Results : k = %d error = %f' % (Temp_K, error_rate[Temp_K - min_k_value] * 100))
 
@@ -196,6 +208,52 @@ def Determine_Best_K(Train_Test_Datas, Outputs) :
     Best_K_Value = error_rate.index(min(error_rate)) + min_k_value
 
     return Best_K_Value
+
+def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, C_Value : int, SAVE : bool):
+    return
+
+def Logistic_Regression_Classifier_Machine(Datas : dict, Outputs : dict, C_Value : int, SAVE : bool) :
+    # CREATE MACHINE
+    Logistic_Regression_Classifier = LogisticRegression(solver = 'liblinear', C=C_Value)
+
+    # TRAIN MACHINE
+    Logistic_Regression_Classifier.fit(Datas['X_Train'], Datas['Y_Train'])
+
+    # PREDICT
+    predictions = Logistic_Regression_Classifier.predict(Datas['X_Test'])
+
+    # CALCULATE ERRORS
+    Outputs['Confusion Matrix ( Logistic Regression Classifier )'] = confusion_matrix(Datas['Y_Test'], predictions)
+    Outputs['Classification Report ( Logistic Regression Classifier )'] = classification_report(Datas['Y_Test'], predictions)
+    error = np.mean(predictions != Datas['Y_Test'])
+
+    # SAVING BEST MACHINE
+    if SAVE :
+        Print_Log('Saving Machine')
+        joblib.dump(Logistic_Regression_Classifier, '%s/Logistic-Regression-Classifier-Machine.sav' % Machine_Save_Dir)
+    return error
+
+def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_State = 0) :
+    # CREATE MACHINE
+    Support_Vector_Machine = OneVsOneClassifier(LinearSVC(random_state = Random_State))
+
+    # TRAIN MACHINE
+    Support_Vector_Machine.fit(Datas['X_Train'], Datas['Y_Train'])
+
+    # PREDICT
+    predictions = Support_Vector_Machine.predict(Datas['X_Test'])
+
+    # CALCULATE ERRORS
+    Outputs['Confusion Matrix ( Support Vector Machine )'] = confusion_matrix(Datas['Y_Test'], predictions)
+    Outputs['Classification Report ( Support Vector Machine )'] = classification_report(Datas['Y_Test'], predictions)
+    error = np.mean(predictions != Datas['Y_Test'])
+
+    # SAVING BEST MACHINE
+    if SAVE :
+        Print_Log('Saving Machine')
+        joblib.dump(Support_Vector_Machine,'%s/Support_Vector_Machine.sav' % Machine_Save_Dir)
+
+    return error
 
 
 def Main_Process() :
@@ -223,23 +281,49 @@ def Main_Process() :
     Print_Log("PHASE 4 : Splitting Dataset")
     Train_Test_Datas = Split_Data(df)
 
-    # HERE WE TRAIN A BASIC SYSTEM ON THE DATASET
-    Print_Log("PHASE 5 : Training base model, K=1")
-    Train_Test_Machine(Train_Test_Datas, Outputs, 1, False)
+    # DETERMINE AGLORYTM
+    print('Enter Algorythm to Train : ( (K)-Neareset-Neighbor (G)aussian-Naive-Bayes (L)ogistic-Regression-Classifier (S)upport-Vector-Machine )')
+    Algorythm = input('Algorytm : ')
+
+    # K-Nearest-Neighbor
+    if Algorythm == 'K' :
+        # HERE WE TRAIN A BASIC SYSTEM ON THE DATASET
+        Print_Log("PHASE 5 : Training base model, K=1")
+        K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, 1, False)
 
 
 
-    Print_Log("PHASE 6 : Finding the best value for K")
-    Best_K = Determine_Best_K(Train_Test_Datas, Outputs)
+        Print_Log("PHASE 6 : Finding the best value for K")
+        Best_K = Determine_Best_K(Train_Test_Datas, Outputs)
 
-    # SAVING ALL THE RESULTS AND MACHINE
-    Print_Log("PHASE 8 : Saving results")
+        # SAVING ALL THE RESULTS AND MACHINE
+        Print_Log("PHASE 8 : Saving results")
+        SaveOutput(Outputs)
+
+
+        # Retraining with the best K value
+        Print_Log("PHASE 9 : Retraining with the best K value")
+        K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Best_K, True)
+
+    # Gaussian-Naive-Bayes
+    if Algorythm == 'G' :
+        print('PHASE 5 : Training Gaussian Naive Bayes')
+        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, 10, True)
+
+    # Logistic-Regression-Classifier
+    if Algorythm == 'L' :
+        print('PHASE 5 : Training Logistic Regression Classifier')
+        Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
+
+    # Support-Vector-Machine
+    if Algorythm == 'S' :
+        print('PHASE 5 : Training Support Vector Machine')
+        Support_Vector_Machine(Train_Test_Datas, Outputs, True)
+
+
+    # SAVE OUTPUT
+    print('Saving Outputs')
     SaveOutput(Outputs)
-
-
-    # Retraining with the best K value
-    Print_Log("PHASE 9 : Retraining with the best K value")
-    Train_Test_Machine(Train_Test_Datas, Outputs, Best_K, True)
 
     return 'Done'
 

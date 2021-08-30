@@ -24,6 +24,7 @@
     <Content Include="Output\DataLog.txt" />
     <Content Include="Output\K Value.png" />
     <Content Include="Output\KNN - Machine.sav" />
+    <Content Include="Output\Logistic-Regression-Classifier-Machine.sav" />
     <Content Include="Output\Trained_Machines_Reports.txt" />
     <Content Include="SRC\DataFiles\Dataset.csv" />
     <Content Include="README.md" />
