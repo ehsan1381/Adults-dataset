@@ -8,20 +8,20 @@
 # DURING EXECUTION
 
 import os
-Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
+Main_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
 Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
 Machine_Save_Dir = '%s/Output/KNN - Machine.sav' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 3
+max_k_value = 40
 min_k_value = 2
 
 # DEFINITION OF Print_Log
 def Print_Log(Log_String : str) :
     Output_Dir = '%s/Output' % Main_Dir
     try: os.chdir(Output_Dir)
-    except: 
+    except:
         os.mkdir(Output_Dir)
         os.chdir(Output_Dir)
 
@@ -71,7 +71,7 @@ Columns_to_Encode = ['workclass', 'education', 'marital-stauts',
 def SaveOutput(Objects : dict) :
     Output_Dir = '%s/Output' % Main_Dir
     try: os.chdir(Output_Dir)
-    except: 
+    except:
         os.mkdir(Output_Dir)
         os.chdir(Output_Dir)
     SaveFile = open('Trained_Machines_Reports.txt','w')
@@ -160,7 +160,7 @@ def Split_Data(DataFrame) :
     x_train, x_test, y_train, y_test = train_test_split(DataFrame.drop('income', axis=1), DataFrame['income'], test_size=0.3, random_state=42)
 
     # AT THIS POINT WE ADD THEM ALL TO A DICT OBJ
-    # SO THAT WE GET A PRETTIER AND CLEANER FUNCTION 
+    # SO THAT WE GET A PRETTIER AND CLEANER FUNCTION
     # CALL BUT HANDLE THE SAME STUFF AT Train_Test_Machine()
     Train_Test_Datas = dict()
     Train_Test_Datas['X_Train'] = x_train
@@ -219,7 +219,7 @@ def Main_Process() :
     df = Preprocess_Data(df)
 
 
-    
+
     Print_Log("PHASE 4 : Splitting Dataset")
     Train_Test_Datas = Split_Data(df)
 
@@ -236,7 +236,7 @@ def Main_Process() :
     Print_Log("PHASE 8 : Saving results")
     SaveOutput(Outputs)
 
-    
+
     # Retraining with the best K value
     Print_Log("PHASE 9 : Retraining with the best K value")
     Train_Test_Machine(Train_Test_Datas, Outputs, Best_K, True)
