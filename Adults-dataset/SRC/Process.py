@@ -14,8 +14,8 @@ Machine_Save_Dir = '%s/Output' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 50
-min_k_value = 2
+max_k_value = 25
+min_k_value = 20
 Phase = 1
 
 # DEFINITION OF Print_Log
@@ -29,21 +29,22 @@ def Print_Log(Log_String : str, Phase : int) :
         os.chdir(Output_Dir)
 
     if Phase == 0 :
-        Log_File = open('DataLog.txt', 'a')
+        Log_File = open('DataLog - ( %s ).txt' % Algorythm, 'a')
         Log_File.write('%s\n' % Log_String)
         print('%s' % Log_String)
         Log_File.close()
     
     else :
-        Log_File = open('DataLog - %s.txt' % Algorythm, 'a')
+        Log_File = open('DataLog - ( %s ).txt' % Algorythm, 'a')
         Log_File.write('PHASE %d : %s\n' % (Phase, Log_String))
         print('PHASE %d : %s' % (Phase, Log_String))
         Log_File.close()
     return 0
 
 # DETERMINE AGLORYTM
-Print_Log('Enter Algorythm to Train : ( K-Neareset-Neighbor Gaussian-Naive-Bayes Logistic-Classifier Support-Vector-Machine )', 0)
-Print_Log('Enter Capital Letters of Algorythm eg : KNN for K-Nearest-Neighbors', 0)
+print('Enter Algorythm to Train : ( K-Neareset-Neighbor Gaussian-Naive-Bayes Logistic-Classifier Support-Vector-Machine )')
+print('Enter Capital Letters of Algorythm eg : KNN for K-Nearest-Neighbors')
+print('* ALL to Run All Algorythms')
 Algorythm = input('Algorythm : ')
 
 # WE USE THESE PRINT TO SEE WHAT STATUS WE HAVE
@@ -97,7 +98,7 @@ def SaveOutput(Objects : dict) :
     except:
         os.mkdir(Output_Dir)
         os.chdir(Output_Dir)
-    SaveFile = open('%s - Reports.txt' % Algorythm,'w')
+    SaveFile = open('Reports - %s.txt' % Algorythm,'w')
     for i in Objects:
         SaveFile.write('%s : %s \n' %(i,str(Objects[i])))
     SaveFile.close()
@@ -156,13 +157,13 @@ def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bo
         # NEXT PHASE
         Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(KNN, Datas['X_Test'], Datas['Y_Test']) 
-        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( K Nearest Neighbors %d ).png' % (Main_Dir, K), dpi=150)
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( KNN %d ).png' % (Main_Dir, K), dpi=150)
 
         # SAVING MACHINE
         Print_Log('Saving Machine', Phase)
         # NEXT PHASE
         Phase += 1
-        joblib.dump(KNN, '%s/K-Nearest-Neighbor-Machine.sav' % Machine_Save_Dir)
+        joblib.dump(KNN, '%s/Trained Machine ( KNN %d ).sav' % (Machine_Save_Dir, K))
 
     return error
 
@@ -272,13 +273,13 @@ def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, SAVE : bool):
         # NEXT PHASE
         Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(GNB, Datas['X_Test'], Datas['Y_Test']) 
-        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Gaussian Naive Bayes ).png' % Main_Dir, dpi=150)
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( GNB ).png' % Main_Dir, dpi=150)
 
         # SAVING MACHINE
         Print_Log('Saving Machine', Phase)
         # NEXT PHASE
         Phase += 1
-        joblib.dump(GNB, '%s/Gaussian-Naive-Bayes-Machine.sav' % Machine_Save_Dir)
+        joblib.dump(GNB, '%s/Trained Machine ( GNB ).sav' % Machine_Save_Dir)
 
     return error
 
@@ -310,12 +311,12 @@ def Logistic_Regression_Classifier_Machine(Datas : dict, Outputs : dict, C_Value
         # NEXT PHASE
         Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(Logistic_Regression_Classifier, Datas['X_Test'], Datas['Y_Test']) 
-        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Logistic Classifier ).png' % Main_Dir, dpi=150)
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( LC ).png' % Main_Dir, dpi=150)
 
         Print_Log('Saving Machine', Phase)
         # NEXT PHASE
         Phase += 1
-        joblib.dump(Logistic_Regression_Classifier, '%s/Logistic-Classifier-Machine.sav' % Machine_Save_Dir)
+        joblib.dump(Logistic_Regression_Classifier, '%s/Trained Machine ( LC ).sav' % Machine_Save_Dir)
     return error
 
 def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_State = 0) :
@@ -346,13 +347,13 @@ def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_Sta
         # NEXT PHASE
         Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(Support_Vector_Machine, Datas['X_Test'], Datas['Y_Test']) 
-        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Support Vector Machine ).png' % Main_Dir, dpi=150)
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( SVM ).png' % Main_Dir, dpi=150)
 
         # SAVING MACHINE
         Print_Log('Saving Machine', Phase)
         # NEXT PHASE
         Phase += 1
-        joblib.dump(Support_Vector_Machine,'%s/Support-Vector-Machine.sav' % Machine_Save_Dir)
+        joblib.dump(Support_Vector_Machine,'%s/Trained Machine ( SVM ).sav' % Machine_Save_Dir)
 
     return error
 
@@ -396,9 +397,6 @@ def Main_Process() :
 
     # K-Nearest-Neighbor
     if Algorythm == 'KNN' :
-        Print_Log('K Nearest Neighbors', 0)
-        Algorythm = 'K Nearest Neighbor'
-
         Print_Log("Finding the best value for K", Phase)
         Best_K = Determine_Best_K(Train_Test_Datas, Outputs)
         # NEXT PHASE
@@ -419,34 +417,50 @@ def Main_Process() :
 
     # Gaussian-Naive-Bayes
     elif Algorythm == 'GNB' :
-        Print_Log('Gaussian Naive Bayes', 0)
+        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, True)
         # NEXT PHASE
         Phase += 1
-        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, True)
-        Algorythm = 'Gaussian Naive Bayes'
 
     # Logistic-Classifier
     elif Algorythm == 'LC' :
-        Print_Log('Logistic Classifier', 0)
+        Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
         # NEXT PHASE
         Phase += 1
-        Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
-        Algorythm = 'Logistic Classifier'
 
     # Support-Vector-Machine
     elif Algorythm == 'SVM' :
-        Print_Log('Support Vector Machine', 0)
+        Support_Vector_Machine(Train_Test_Datas, Outputs, True)
         # NEXT PHASE
         Phase += 1
+
+    # RUN ALL ALGORYTHMS
+    elif Algorythm == 'ALL' :
+        # KNN
+        print('Running KNN')
+        Print_Log("Finding the best value for K", Phase)
+        Best_K = Determine_Best_K(Train_Test_Datas, Outputs)
+        
+        # RETRATINING WITH THE BEST K VALUE
+        Print_Log("Retraining with the best K value", Phase)
+        K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Best_K, True)
+
+        # GNB
+        print('Running GNB')
+        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, True)
+
+        # LC
+        print('Running LC')
+        Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
+        
+        # SVM
+        print('Running SVM')
         Support_Vector_Machine(Train_Test_Datas, Outputs, True)
-        Algorythm = 'Support Vector Machine'
 
 
     # SAVE OUTPUT
     Print_Log('Saving Outputs', Phase)
-    # NEXT PHASE
-    Phase += 1
     SaveOutput(Outputs)
+
 
     return 'Done'
 

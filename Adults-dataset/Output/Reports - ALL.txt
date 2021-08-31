@@ -1,0 +1,100 @@
+Columns : ['age', 'workclass', 'fnlwgt', 'education', 'education-num', 'marital-stauts', 'occupation', 'relationship', 'race', 'sex', 'capital-gain', 'capital-loss', 'hours-per-week', 'native-country', 'income'] 
+Confusion Matrix 20 : [[7375   80]
+ [1832  482]] 
+Classification Report 20 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.89      7455
+           1       0.86      0.21      0.34      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.83      0.60      0.61      9769
+weighted avg       0.81      0.80      0.75      9769
+ 
+Confusion Matrix 21 : [[7354  101]
+ [1814  500]] 
+Classification Report 21 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.88      7455
+           1       0.83      0.22      0.34      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.82      0.60      0.61      9769
+weighted avg       0.81      0.80      0.76      9769
+ 
+Confusion Matrix 22 : [[7390   65]
+ [1844  470]] 
+Classification Report 22 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.89      7455
+           1       0.88      0.20      0.33      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.84      0.60      0.61      9769
+weighted avg       0.82      0.80      0.75      9769
+ 
+Confusion Matrix 23 : [[7375   80]
+ [1826  488]] 
+Classification Report 23 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.89      7455
+           1       0.86      0.21      0.34      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.83      0.60      0.61      9769
+weighted avg       0.82      0.80      0.76      9769
+ 
+Confusion Matrix 24 : [[7398   57]
+ [1857  457]] 
+Classification Report 24 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.89      7455
+           1       0.89      0.20      0.32      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.84      0.59      0.60      9769
+weighted avg       0.82      0.80      0.75      9769
+ 
+Confusion Matrix 25 : [[7391   64]
+ [1853  461]] 
+Classification Report 25 :               precision    recall  f1-score   support
+
+           0       0.80      0.99      0.89      7455
+           1       0.88      0.20      0.32      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.84      0.60      0.60      9769
+weighted avg       0.82      0.80      0.75      9769
+ 
+Gaussian Naive Bayes : [[7078  377]
+ [1587  727]] 
+Classification Report :               precision    recall  f1-score   support
+
+           0       0.82      0.95      0.88      7455
+           1       0.66      0.31      0.43      2314
+
+    accuracy                           0.80      9769
+   macro avg       0.74      0.63      0.65      9769
+weighted avg       0.78      0.80      0.77      9769
+ 
+Confusion Matrix ( Logistic Classifier ) : [[7202  253]
+ [1636  678]] 
+Classification Report ( Logistic Classifier ) :               precision    recall  f1-score   support
+
+           0       0.81      0.97      0.88      7455
+           1       0.73      0.29      0.42      2314
+
+    accuracy                           0.81      9769
+   macro avg       0.77      0.63      0.65      9769
+weighted avg       0.79      0.81      0.77      9769
+ 
+Confusion Matrix ( Support Vector Machine ) : [[7446    9]
+ [2083  231]] 
+Classification Report ( Support Vector Machine ) :               precision    recall  f1-score   support
+
+           0       0.78      1.00      0.88      7455
+           1       0.96      0.10      0.18      2314
+
+    accuracy                           0.79      9769
+   macro avg       0.87      0.55      0.53      9769
+weighted avg       0.82      0.79      0.71      9769
+ 
