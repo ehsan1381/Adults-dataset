@@ -1,0 +1,28 @@
+PHASE 1 : Importing modules
+PHASE 2 : Reading dataset
+PHASE 2 : Preprocessing dataset
+PHASE 3 : Processing Column workclass
+PHASE 3 : Transforming Column workclass
+PHASE 3 : Processing Column education
+PHASE 3 : Transforming Column education
+PHASE 3 : Processing Column marital-stauts
+PHASE 3 : Transforming Column marital-stauts
+PHASE 3 : Processing Column occupation
+PHASE 3 : Transforming Column occupation
+PHASE 3 : Processing Column relationship
+PHASE 3 : Transforming Column relationship
+PHASE 3 : Processing Column race
+PHASE 3 : Transforming Column race
+PHASE 3 : Processing Column sex
+PHASE 3 : Transforming Column sex
+PHASE 3 : Processing Column native-country
+PHASE 3 : Transforming Column native-country
+PHASE 3 : Processing Column income
+PHASE 3 : Transforming Column income
+PHASE 3 : Saving processed data
+PHASE 3 : Splitting Dataset
+PHASE 5 : Creating Logistic Classifier Machine
+PHASE 5 : Training Logistic Classifier Machine
+PHASE 5 : Predicting with Logistic  Classifier Machine
+PHASE 5 : Saving Confusion Matrix Plot
+PHASE 6 : Saving Machine

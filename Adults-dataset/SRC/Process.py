@@ -8,7 +8,7 @@
 # DURING EXECUTION
 
 import os
-Main_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
+Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
 Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
 Machine_Save_Dir = '%s/Output' % Main_Dir
 
@@ -16,25 +16,42 @@ Machine_Save_Dir = '%s/Output' % Main_Dir
 # K TO TEST
 max_k_value = 50
 min_k_value = 2
+Phase = 1
 
 # DEFINITION OF Print_Log
-def Print_Log(Log_String : str) :
+def Print_Log(Log_String : str, Phase : int) :
+    global Algorythm
+
     Output_Dir = '%s/Output' % Main_Dir
     try: os.chdir(Output_Dir)
     except:
         os.mkdir(Output_Dir)
         os.chdir(Output_Dir)
 
-    Log_File = open('DataLog.txt', 'a')
-    Log_File.write('%s\n' % Log_String)
-    print(Log_String)
-    Log_File.close()
+    if Phase == 0 :
+        Log_File = open('DataLog.txt', 'a')
+        Log_File.write('%s\n' % Log_String)
+        print('%s' % Log_String)
+        Log_File.close()
+    
+    else :
+        Log_File = open('DataLog - %s.txt' % Algorythm, 'a')
+        Log_File.write('PHASE %d : %s\n' % (Phase, Log_String))
+        print('PHASE %d : %s' % (Phase, Log_String))
+        Log_File.close()
     return 0
 
+# DETERMINE AGLORYTM
+Print_Log('Enter Algorythm to Train : ( K-Neareset-Neighbor Gaussian-Naive-Bayes Logistic-Classifier Support-Vector-Machine )', 0)
+Print_Log('Enter Capital Letters of Algorythm eg : KNN for K-Nearest-Neighbors', 0)
+Algorythm = input('Algorythm : ')
 
 # WE USE THESE PRINT TO SEE WHAT STATUS WE HAVE
 # AND WHERE WE ARE
-Print_Log("PHASE 1 : Importing modules")
+Print_Log("Importing modules", Phase)
+
+# NEXT PHASE
+Phase += 1
 
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
@@ -73,12 +90,14 @@ Columns_to_Encode = ['workclass', 'education', 'marital-stauts',
 # ALSO CREATES A SUBDIRECTORY NAMED 'Output'
 # SO WE DONT MESS THINGS UP
 def SaveOutput(Objects : dict) :
+    global Algorythm
+
     Output_Dir = '%s/Output' % Main_Dir
     try: os.chdir(Output_Dir)
     except:
         os.mkdir(Output_Dir)
         os.chdir(Output_Dir)
-    SaveFile = open('Trained_Machines_Reports.txt','w')
+    SaveFile = open('%s - Reports.txt' % Algorythm,'w')
     for i in Objects:
         SaveFile.write('%s : %s \n' %(i,str(Objects[i])))
     SaveFile.close()
@@ -113,6 +132,9 @@ def PlotKValues(error_rate : list, k_range : range):
     
 
 def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
+    # PHASE VARIABLE
+    global Phase
+
     # DEFINE MACHINE WITH K VALUE
     KNN = KNeighborsClassifier(n_neighbors=K)
 
@@ -130,43 +152,52 @@ def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bo
     # SAVING BEST MACHINE
     if SAVE :
         # PLOT CONFUSION MATRIX
-        print('Saving Confusion Matrix Plot')
+        Print_Log('Saving Confusion Matrix Plot', Phase)
+        # NEXT PHASE
+        Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(KNN, Datas['X_Test'], Datas['Y_Test']) 
         Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( K Nearest Neighbors %d ).png' % (Main_Dir, K), dpi=150)
 
         # SAVING MACHINE
-        Print_Log('Saving Machine')
+        Print_Log('Saving Machine', Phase)
+        # NEXT PHASE
+        Phase += 1
         joblib.dump(KNN, '%s/K-Nearest-Neighbor-Machine.sav' % Machine_Save_Dir)
 
     return error
 
 def Preprocess_Data(DataFrame) :
+    # PHASE VARIABLE
+    global Phase
 
     # START ENCODING
     for temp_column in Columns_to_Encode :
-        Print_Log('PHASE 3 : Processing Column %s' % temp_column)
+        Print_Log('Processing Column %s' % temp_column, Phase)
         # DEFINE LABEL ENCODER
-        Print_Log('\t  Defining Encoder')
+        Print_Log('\t  Defining Encoder', 0)
         Encoder = preprocessing.LabelEncoder()
 
         # FIT ENCODER
-        Print_Log('\t  Fitting data to Encoder')
+        Print_Log('\t  Fitting data to Encoder', 0)
         Encoder.fit(DataFrame[temp_column])
 
         # PRINT ENCODER MAPPING
-        Print_Log("\t  Label mapping :")
+        Print_Log("\t  Label mapping :", 0)
         for encoded_num, item in enumerate(Encoder.classes_):
-            Print_Log('\t  %s ---> %s' % (item , encoded_num))
+            Print_Log('\t  %s ---> %s' % (item , encoded_num), 0)
 
 
         # TRANSFORM COLUMN VALUES
-        Print_Log('PHASE 3 : Transforming Column %s' % temp_column)
+        Print_Log('Transforming Column %s' % temp_column, Phase)
         DataFrame[temp_column] = Encoder.transform(DataFrame[temp_column])
-    Print_Log('PHASE 3 : Saving processed data')
+    Print_Log('Saving processed data', Phase)
     DataFrame.to_csv('%s/SRC/DataFiles/Processed_DataFrame.csv' % Main_Dir, index=False, header=False)
     return DataFrame
 
 def Split_Data(DataFrame) :
+    # PHASE VARIABLE
+    global Phase
+
     # SPLITTING TO TEST AND TRAIN SETS
     x_train, x_test, y_train, y_test = train_test_split(DataFrame.drop('income', axis=1), DataFrame['income'], test_size=0.3, random_state=42)
 
@@ -182,6 +213,9 @@ def Split_Data(DataFrame) :
     return Train_Test_Datas
 
 def Determine_Best_K(Train_Test_Datas, Outputs) :
+    # PHASE VARIABLE
+    global Phase
+
     error_rate = []
 
     # SETTING K RANGE
@@ -189,13 +223,15 @@ def Determine_Best_K(Train_Test_Datas, Outputs) :
     # THIS IS SIMPLE WE TAKE K VALUE WE TRAIN WE TEST ERROR
     # THE K VALUE WHICH MAKES LEAST ERRROR WILL BE CHOSEN
     for Temp_K in K_range:
-        Print_Log('PAHSE 6 : Training K=%d' % Temp_K)
+        Print_Log('Training K=%d' % Temp_K, Phase)
         error = K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Temp_K, False)
         error_rate.append(error)
-        Print_Log('\t  Results : k = %d error = %f' % (Temp_K, error_rate[Temp_K - min_k_value] * 100))
+        Print_Log('\t  Results : k = %d error = %f' % (Temp_K, error_rate[Temp_K - min_k_value] * 100), 0)
 
     # PLOTTING K VALUES AND ERRORS
-    Print_Log("PHASE 7 : Plotting K values and errors")
+    Print_Log("Plotting K values and errors", Phase)
+    # NEXT PHASE
+    Phase += 1
     PlotKValues(error_rate, K_range)
 
     # THE LINE BELLOW :
@@ -209,13 +245,19 @@ def Determine_Best_K(Train_Test_Datas, Outputs) :
     return Best_K_Value
 
 def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, SAVE : bool):
+    # PHASE VARIABLE
+    global Phase
+
     # DEFINE MACHINE
+    Print_Log('Creating Gaussian Naive Bayes Machine', Phase)
     GNB = GaussianNB()
 
     # TRAIN MACHINE
+    Print_Log('Training Gaussian Naive Bayes Machine', Phase)
     GNB.fit(Datas['X_Train'], Datas['Y_Train'])
 
     # FEED TEST DATA TO MACHINE AND RECORD PREDICTIONS
+    Print_Log('Predicting with Gaussian Naive Bayes Machine', Phase)
     predictions = GNB.predict(Datas['X_Test'])
 
     # CALCULATE ERRORS
@@ -226,50 +268,70 @@ def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, SAVE : bool):
     # SAVING BEST MACHINE
     if SAVE :
         # PLOT CONFUSION MATRIX
-        print('Saving Confusion Matrix Plot')
+        Print_Log('Saving Confusion Matrix Plot', Phase)
+        # NEXT PHASE
+        Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(GNB, Datas['X_Test'], Datas['Y_Test']) 
         Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Gaussian Naive Bayes ).png' % Main_Dir, dpi=150)
 
         # SAVING MACHINE
-        Print_Log('Saving Machine')
+        Print_Log('Saving Machine', Phase)
+        # NEXT PHASE
+        Phase += 1
         joblib.dump(GNB, '%s/Gaussian-Naive-Bayes-Machine.sav' % Machine_Save_Dir)
 
     return error
 
 def Logistic_Regression_Classifier_Machine(Datas : dict, Outputs : dict, C_Value : int, SAVE : bool) :
+    # PHASE VARIABLE
+    global Phase
+
     # CREATE MACHINE
+    Print_Log('Creating Logistic Classifier Machine', Phase)
     Logistic_Regression_Classifier = LogisticRegression(solver = 'liblinear', C=C_Value)
 
     # TRAIN MACHINE
+    Print_Log('Training Logistic Classifier Machine', Phase)
     Logistic_Regression_Classifier.fit(Datas['X_Train'], Datas['Y_Train'])
 
     # PREDICT
+    Print_Log('Predicting with Logistic  Classifier Machine', Phase)
     predictions = Logistic_Regression_Classifier.predict(Datas['X_Test'])
 
     # CALCULATE ERRORS
-    Outputs['Confusion Matrix ( Logistic Regression Classifier )'] = confusion_matrix(Datas['Y_Test'], predictions)
-    Outputs['Classification Report ( Logistic Regression Classifier )'] = classification_report(Datas['Y_Test'], predictions)
+    Outputs['Confusion Matrix ( Logistic Classifier )'] = confusion_matrix(Datas['Y_Test'], predictions)
+    Outputs['Classification Report ( Logistic Classifier )'] = classification_report(Datas['Y_Test'], predictions)
     error = np.mean(predictions != Datas['Y_Test'])
 
     # SAVING BEST MACHINE
     if SAVE :
         # PLOT CONFUSION MATRIX
-        print('Saving Confusion Matrix Plot')
+        Print_Log('Saving Confusion Matrix Plot', Phase)
+        # NEXT PHASE
+        Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(Logistic_Regression_Classifier, Datas['X_Test'], Datas['Y_Test']) 
-        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Logistic Regression Classifier ).png' % Main_Dir, dpi=150)
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Logistic Classifier ).png' % Main_Dir, dpi=150)
 
-        Print_Log('Saving Machine')
-        joblib.dump(Logistic_Regression_Classifier, '%s/Logistic-Regression-Classifier-Machine.sav' % Machine_Save_Dir)
+        Print_Log('Saving Machine', Phase)
+        # NEXT PHASE
+        Phase += 1
+        joblib.dump(Logistic_Regression_Classifier, '%s/Logistic-Classifier-Machine.sav' % Machine_Save_Dir)
     return error
 
 def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_State = 0) :
+    # PHASE VARIABLE
+    global Phase
+
     # CREATE MACHINE
+    Print_Log('Creating Support Vector Machine', Phase)
     Support_Vector_Machine = OneVsOneClassifier(LinearSVC(random_state = Random_State))
 
     # TRAIN MACHINE
+    Print_Log('Training Support Vector Machine', Phase)
     Support_Vector_Machine.fit(Datas['X_Train'], Datas['Y_Train'])
 
     # PREDICT
+    Print_Log('Predicting with Support Vector Machine', Phase)
     predictions = Support_Vector_Machine.predict(Datas['X_Test'])
 
     # CALCULATE ERRORS
@@ -280,18 +342,27 @@ def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_Sta
     # SAVING BEST MACHINE
     if SAVE :
         # PLOT CONFUSION MATRIX
-        print('Saving Confusion Matrix Plot')
+        Print_Log('Saving Confusion Matrix Plot', Phase)
+        # NEXT PHASE
+        Phase += 1
         Confusion_mat_plot = plot_confusion_matrix(Support_Vector_Machine, Datas['X_Test'], Datas['Y_Test']) 
         Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Support Vector Machine ).png' % Main_Dir, dpi=150)
 
         # SAVING MACHINE
-        Print_Log('Saving Machine')
+        Print_Log('Saving Machine', Phase)
+        # NEXT PHASE
+        Phase += 1
         joblib.dump(Support_Vector_Machine,'%s/Support-Vector-Machine.sav' % Machine_Save_Dir)
 
     return error
 
 
 def Main_Process() :
+    # PHASE VARIABLE
+    global Phase
+
+    # ALGORYTHM VARIABLE
+    global Algorythm
     # DEFINIG VARIABLES LOCAL TO THIS
     # FUNCTION :
     # A DICT OBJECT TO SAVE RESULTS OF EACH TRAIN
@@ -299,8 +370,11 @@ def Main_Process() :
     Outputs = {}
     Train_Test_Datas = {}
 
+
+
     # READ DATASET
-    Print_Log("PHASE 2 : Reading dataset")
+    Print_Log("Reading dataset", Phase)
+    # NEXT PHASE
     try :
         df = pd.read_csv(Dataset_Dir, names=Columns)
     except FileNotFoundError:
@@ -308,60 +382,74 @@ def Main_Process() :
     Outputs['Columns'] = Columns
 
     # PREPROCESSING DATASET
-    Print_Log("PHASE 3 : Preprocessing dataset")
+    Print_Log("Preprocessing dataset", Phase)
+    # NEXT PHASE
+    Phase += 1
     df = Preprocess_Data(df)
 
 
 
-    Print_Log("PHASE 4 : Splitting Dataset")
+    Print_Log("Splitting Dataset", Phase)
+    # NEXT PHASE
+    Phase += 1
     Train_Test_Datas = Split_Data(df)
 
-    # DETERMINE AGLORYTM
-    print('Enter Algorythm to Train : ( (K)-Neareset-Neighbor (G)aussian-Naive-Bayes (L)ogistic-Regression-Classifier (S)upport-Vector-Machine )')
-    Algorythm = input('Algorytm : ')
-
     # K-Nearest-Neighbor
-    if Algorythm == 'K' :
-        # HERE WE TRAIN A BASIC SYSTEM ON THE DATASET
-        Print_Log("PHASE 5 : Training base model, K=1")
-        K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, 1, False)
+    if Algorythm == 'KNN' :
+        Print_Log('K Nearest Neighbors', 0)
+        Algorythm = 'K Nearest Neighbor'
 
-
-
-        Print_Log("PHASE 6 : Finding the best value for K")
+        Print_Log("Finding the best value for K", Phase)
         Best_K = Determine_Best_K(Train_Test_Datas, Outputs)
+        # NEXT PHASE
+        Phase += 1
 
         # SAVING ALL THE RESULTS AND MACHINE
-        Print_Log("PHASE 8 : Saving results")
-        SaveOutput(Outputs)
+        Print_Log("Saving results", Phase)
+        # NEXT PHASE
+        Phase += 1
+
 
 
         # Retraining with the best K value
-        Print_Log("PHASE 9 : Retraining with the best K value")
+        Print_Log("Retraining with the best K value", Phase)
+        # NEXT PHASE
+        Phase += 1
         K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Best_K, True)
 
     # Gaussian-Naive-Bayes
-    elif Algorythm == 'G' :
-        print('PHASE 5 : Training Gaussian Naive Bayes')
+    elif Algorythm == 'GNB' :
+        Print_Log('Gaussian Naive Bayes', 0)
+        # NEXT PHASE
+        Phase += 1
         Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, True)
+        Algorythm = 'Gaussian Naive Bayes'
 
-    # Logistic-Regression-Classifier
-    elif Algorythm == 'L' :
-        print('PHASE 5 : Training Logistic Regression Classifier')
+    # Logistic-Classifier
+    elif Algorythm == 'LC' :
+        Print_Log('Logistic Classifier', 0)
+        # NEXT PHASE
+        Phase += 1
         Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
+        Algorythm = 'Logistic Classifier'
 
     # Support-Vector-Machine
-    elif Algorythm == 'S' :
-        print('PHASE 5 : Training Support Vector Machine')
+    elif Algorythm == 'SVM' :
+        Print_Log('Support Vector Machine', 0)
+        # NEXT PHASE
+        Phase += 1
         Support_Vector_Machine(Train_Test_Datas, Outputs, True)
+        Algorythm = 'Support Vector Machine'
 
 
     # SAVE OUTPUT
-    print('Saving Outputs')
+    Print_Log('Saving Outputs', Phase)
+    # NEXT PHASE
+    Phase += 1
     SaveOutput(Outputs)
 
     return 'Done'
 
 # RUN MAIN
 if __name__ == '__main__':
-    Print_Log(Main_Process())
+    Main_Process()
