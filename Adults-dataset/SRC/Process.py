@@ -8,13 +8,13 @@
 # DURING EXECUTION
 
 import os
-Main_Dir = 'E:/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
+Main_Dir = '/mnt/Archives/Archives/Documents/Python/Adults/Adults-dataset/Adults-dataset'
 Dataset_Dir = '%s/SRC/DataFiles/Dataset.csv' % Main_Dir
 Machine_Save_Dir = '%s/Output' % Main_Dir
 
 # THE ALGORYTHM USES THIS AS THE MAX VALUE OF
 # K TO TEST
-max_k_value = 40
+max_k_value = 50
 min_k_value = 2
 
 # DEFINITION OF Print_Log
@@ -40,6 +40,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
+from sklearn.naive_bayes import GaussianNB
 from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
@@ -107,16 +109,7 @@ def PlotKValues(error_rate : list, k_range : range):
 
     return 'PLOTTED'
 
-def Plot_Confusion_Matrix() :
-    # Visualize confusion matrix
-    plt.imshow(confusion_mat, interpolation='nearest', cmap=plt.cm.gray)
-    plt.title('Confusion matrix')
-    plt.colorbar()
-    ticks = np.arange(5)
-    plt.xticks(ticks, ticks)
-    plt.yticks(ticks, ticks)
-    plt.ylabel('True labels')
-    plt.xlabel('Predicted labels')
+
     
 
 def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bool) :
@@ -136,6 +129,12 @@ def K_Neareset_Neighbor_Machine(Datas : dict, Outputs : dict, K : int, SAVE : bo
 
     # SAVING BEST MACHINE
     if SAVE :
+        # PLOT CONFUSION MATRIX
+        print('Saving Confusion Matrix Plot')
+        Confusion_mat_plot = plot_confusion_matrix(KNN, Datas['X_Test'], Datas['Y_Test']) 
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( K Nearest Neighbors %d ).png' % (Main_Dir, K), dpi=150)
+
+        # SAVING MACHINE
         Print_Log('Saving Machine')
         joblib.dump(KNN, '%s/K-Nearest-Neighbor-Machine.sav' % Machine_Save_Dir)
 
@@ -209,8 +208,33 @@ def Determine_Best_K(Train_Test_Datas, Outputs) :
 
     return Best_K_Value
 
-def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, C_Value : int, SAVE : bool):
-    return
+def Gaussian_Naive_Bayes_Machine(Datas : dict, Outputs : dict, SAVE : bool):
+    # DEFINE MACHINE
+    GNB = GaussianNB()
+
+    # TRAIN MACHINE
+    GNB.fit(Datas['X_Train'], Datas['Y_Train'])
+
+    # FEED TEST DATA TO MACHINE AND RECORD PREDICTIONS
+    predictions = GNB.predict(Datas['X_Test'])
+
+    # CALCULATE ERRORS
+    Outputs['Gaussian Naive Bayes'] = confusion_matrix(Datas['Y_Test'], predictions)
+    Outputs['Classification Report'] = classification_report(Datas['Y_Test'], predictions)
+    error = np.mean(predictions != Datas['Y_Test'])
+
+    # SAVING BEST MACHINE
+    if SAVE :
+        # PLOT CONFUSION MATRIX
+        print('Saving Confusion Matrix Plot')
+        Confusion_mat_plot = plot_confusion_matrix(GNB, Datas['X_Test'], Datas['Y_Test']) 
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Gaussian Naive Bayes ).png' % Main_Dir, dpi=150)
+
+        # SAVING MACHINE
+        Print_Log('Saving Machine')
+        joblib.dump(GNB, '%s/Gaussian-Naive-Bayes-Machine.sav' % Machine_Save_Dir)
+
+    return error
 
 def Logistic_Regression_Classifier_Machine(Datas : dict, Outputs : dict, C_Value : int, SAVE : bool) :
     # CREATE MACHINE
@@ -229,6 +253,11 @@ def Logistic_Regression_Classifier_Machine(Datas : dict, Outputs : dict, C_Value
 
     # SAVING BEST MACHINE
     if SAVE :
+        # PLOT CONFUSION MATRIX
+        print('Saving Confusion Matrix Plot')
+        Confusion_mat_plot = plot_confusion_matrix(Logistic_Regression_Classifier, Datas['X_Test'], Datas['Y_Test']) 
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Logistic Regression Classifier ).png' % Main_Dir, dpi=150)
+
         Print_Log('Saving Machine')
         joblib.dump(Logistic_Regression_Classifier, '%s/Logistic-Regression-Classifier-Machine.sav' % Machine_Save_Dir)
     return error
@@ -250,8 +279,14 @@ def Support_Vector_Machine(Datas : dict, Outputs : dict, SAVE : bool, Random_Sta
 
     # SAVING BEST MACHINE
     if SAVE :
+        # PLOT CONFUSION MATRIX
+        print('Saving Confusion Matrix Plot')
+        Confusion_mat_plot = plot_confusion_matrix(Support_Vector_Machine, Datas['X_Test'], Datas['Y_Test']) 
+        Confusion_mat_plot.figure_.savefig('%s/Output/Confusion Matrix ( Support Vector Machine ).png' % Main_Dir, dpi=150)
+
+        # SAVING MACHINE
         Print_Log('Saving Machine')
-        joblib.dump(Support_Vector_Machine,'%s/Support_Vector_Machine.sav' % Machine_Save_Dir)
+        joblib.dump(Support_Vector_Machine,'%s/Support-Vector-Machine.sav' % Machine_Save_Dir)
 
     return error
 
@@ -306,17 +341,17 @@ def Main_Process() :
         K_Neareset_Neighbor_Machine(Train_Test_Datas, Outputs, Best_K, True)
 
     # Gaussian-Naive-Bayes
-    if Algorythm == 'G' :
+    elif Algorythm == 'G' :
         print('PHASE 5 : Training Gaussian Naive Bayes')
-        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, 10, True)
+        Gaussian_Naive_Bayes_Machine(Train_Test_Datas, Outputs, True)
 
     # Logistic-Regression-Classifier
-    if Algorythm == 'L' :
+    elif Algorythm == 'L' :
         print('PHASE 5 : Training Logistic Regression Classifier')
         Logistic_Regression_Classifier_Machine(Train_Test_Datas, Outputs, 10, True)
 
     # Support-Vector-Machine
-    if Algorythm == 'S' :
+    elif Algorythm == 'S' :
         print('PHASE 5 : Training Support Vector Machine')
         Support_Vector_Machine(Train_Test_Datas, Outputs, True)
 
